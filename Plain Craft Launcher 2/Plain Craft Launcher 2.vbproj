@@ -112,7 +112,10 @@
     <Resource Include="Resources\**" />
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Pages\PageSetup\PageSetupCustom.xaml">
+    <Page Update="Pages\PageCustomLeft.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Pages\PageCustomRight.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

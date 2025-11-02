@@ -2,11 +2,11 @@
 Imports Microsoft.Windows.Themes
 Imports Newtonsoft.Json.Linq
 
-Public Class PageSetupCustom
+Public Class PageCustomRight
 
     Private Shadows IsLoaded As Boolean = False
 
-    Private Sub PageSetupCustom_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
+    Private Sub PageCustomRight_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
 
         '重复加载部分
         PanBack.ScrollToHome()
@@ -108,30 +108,30 @@ Public Class PageSetupCustom
     Private Shared Sub UiCustomType(value As Integer)
         Select Case value
             Case 0 '无
-                FrmSetupCustom.PanCustomLocal.Visibility = Visibility.Collapsed
-                FrmSetupCustom.PanCustomNet.Visibility = Visibility.Collapsed
-                FrmSetupCustom.HintCustom.Visibility = Visibility.Collapsed
-                FrmSetupCustom.HintCustomWarn.Visibility = Visibility.Collapsed
+                FrmCustomRight.PanCustomLocal.Visibility = Visibility.Collapsed
+                FrmCustomRight.PanCustomNet.Visibility = Visibility.Collapsed
+                FrmCustomRight.HintCustom.Visibility = Visibility.Collapsed
+                FrmCustomRight.HintCustomWarn.Visibility = Visibility.Collapsed
             Case 1 '本地
-                FrmSetupCustom.PanCustomLocal.Visibility = Visibility.Visible
-                FrmSetupCustom.PanCustomNet.Visibility = Visibility.Collapsed
-                FrmSetupCustom.HintCustom.Visibility = Visibility.Visible
-                FrmSetupCustom.HintCustom.Theme = MyHint.Themes.Blue
-                FrmSetupCustom.HintCustomWarn.Visibility = If(Setup.Get("HintCustomWarn"), Visibility.Collapsed, Visibility.Visible)
-                FrmSetupCustom.HintCustom.Text = $"从 PCL 文件夹下的 Custom.xaml 读取主页内容。{vbCrLf}你可以手动编辑该文件，向主页添加文本、图片、常用网站、快捷启动等功能。"
-                FrmSetupCustom.HintCustom.EventType = ""
-                FrmSetupCustom.HintCustom.EventData = ""
+                FrmCustomRight.PanCustomLocal.Visibility = Visibility.Visible
+                FrmCustomRight.PanCustomNet.Visibility = Visibility.Collapsed
+                FrmCustomRight.HintCustom.Visibility = Visibility.Visible
+                FrmCustomRight.HintCustom.Theme = MyHint.Themes.Blue
+                FrmCustomRight.HintCustomWarn.Visibility = If(Setup.Get("HintCustomWarn"), Visibility.Collapsed, Visibility.Visible)
+                FrmCustomRight.HintCustom.Text = $"从 PCL 文件夹下的 Custom.xaml 读取主页内容。{vbCrLf}你可以手动编辑该文件，向主页添加文本、图片、常用网站、快捷启动等功能。"
+                FrmCustomRight.HintCustom.EventType = ""
+                FrmCustomRight.HintCustom.EventData = ""
             Case 2 '联网
-                FrmSetupCustom.PanCustomLocal.Visibility = Visibility.Collapsed
-                FrmSetupCustom.PanCustomNet.Visibility = Visibility.Visible
-                FrmSetupCustom.HintCustom.Visibility = Visibility.Visible
-                FrmSetupCustom.HintCustom.Theme = MyHint.Themes.Blue
-                FrmSetupCustom.HintCustomWarn.Visibility = If(Setup.Get("HintCustomWarn"), Visibility.Collapsed, Visibility.Visible)
-                FrmSetupCustom.HintCustom.Text = $"从指定网址联网获取主页内容。服主也可以用于动态更新服务器公告。{vbCrLf}如果你制作了稳定运行的联网主页，可以点击这条提示投稿，若合格即可加入预设！"
-                FrmSetupCustom.HintCustom.EventType = "打开网页"
-                FrmSetupCustom.HintCustom.EventData = "https://github.com/Hex-Dragon/PCL2/discussions/2528"
+                FrmCustomRight.PanCustomLocal.Visibility = Visibility.Collapsed
+                FrmCustomRight.PanCustomNet.Visibility = Visibility.Visible
+                FrmCustomRight.HintCustom.Visibility = Visibility.Visible
+                FrmCustomRight.HintCustom.Theme = MyHint.Themes.Blue
+                FrmCustomRight.HintCustomWarn.Visibility = If(Setup.Get("HintCustomWarn"), Visibility.Collapsed, Visibility.Visible)
+                FrmCustomRight.HintCustom.Text = $"从指定网址联网获取主页内容。服主也可以用于动态更新服务器公告。{vbCrLf}如果你制作了稳定运行的联网主页，可以点击这条跳转到 HomepageList 仓库，提交 PR 后经过 review 合格即可成为社区主页！"
+                FrmCustomRight.HintCustom.EventType = "打开网页"
+                FrmCustomRight.HintCustom.EventData = "https://github.com/Ignis-Studio/HomepageList"
         End Select
-        FrmSetupCustom.CardCustom.TriggerForceResize()
+        FrmCustomRight.CardCustom.TriggerForceResize()
     End Sub
     Private Async Sub LoadHomepages()
         Dim url As String = "http://pclhomeplazaoss.lingyunawa.top:26995/d/Homepages/HomepageList/homepages.json"
@@ -148,6 +148,7 @@ Public Class PageSetupCustom
 
 
             Dispatcher.Invoke(Sub()
+                                  HomepagesPan.Visibility = Visibility.Visible
                                   HomepagesPan.Children.Clear()
                                   Dim index As Integer = 1
 
@@ -156,12 +157,10 @@ Public Class PageSetupCustom
                                       Dim isPreset As Boolean = item("preset").ToObject(Of Boolean)()
                                       ' 设置图标（直接使用固定路径）
                                       Dim listItem As New MyListItem With {
-                                          .Margin = New Thickness(10, 8, 10, 8),
-                                          .ToolTip = "预设主页",
+                                          .ToolTip = If(isPreset, "预设主页", "社区主页"),
                                           .Title = item("alias").ToString(),
                                           .Info = item("desc").ToString(),
-                                          .Type = MyListItem.CheckType.Clickable,
-                                          .Logo = "pack://application:,,,/images/Blocks/RedstoneLampOn.png",
+                                          .Logo = $"pack://application:,,,/images/Blocks/RedstoneLamp{If(isPreset, "On", "Off")}.png",
                                           .Tag = item("link")
                                       }
 

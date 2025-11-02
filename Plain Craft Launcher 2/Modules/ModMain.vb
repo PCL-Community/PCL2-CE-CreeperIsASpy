@@ -456,6 +456,8 @@ EndHint:
     Public FrmSelectRight As PageSelectRight
     Public FrmSpeedLeft As PageSpeedLeft
     Public FrmSpeedRight As PageSpeedRight
+    Public FrmCustomLeft As PageCustomLeft
+    Public FrmCustomRight As PageCustomRight
 
     '联机页面声明
     Public FrmLinkLeft As PageLinkLeft
@@ -492,7 +494,6 @@ EndHint:
     Public FrmSetupSystem As PageSetupSystem
     Public FrmSetupJava As PageSetupJava
     Public FrmHomePageMarket As PageHomepageMarket
-    Public FrmSetupCustom As PageSetupCustom
 
     '其他页面声明
     Public FrmOtherLeft As PageOtherLeft
